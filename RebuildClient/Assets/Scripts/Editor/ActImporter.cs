@@ -1,24 +1,80 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Assets.Editor;
 using Assets.Scripts;
 using Assets.Scripts.MapEditor.Editor;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEditor.AssetImporters;
+using UnityEditor.Recorder;
+using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Utility.Editor;
 
 [ScriptedImporter(1, "act", AllowCaching = true)]
 public class ActImporter : ScriptedImporter
 {
     public int PaletteCount;
+    public static readonly Dictionary<string, string> AtlasPathToActDir = new();
 
     public override void OnImportAsset(AssetImportContext ctx)
     {
         // var asset = ScriptableObject.CreateInstance<RagnarokActFile>();
         // ctx.AddObjectToAsset(name + " data", asset);
         // ctx.SetMainObject(asset);
+    }
+
+    public static void ImportActFile2(string actPath)
+    {
+        var dir = Path.GetDirectoryName(actPath).Replace("\\", "/");
+        var baseName = Path.GetFileNameWithoutExtension(actPath);
+        // "What is rel?": Assets/Sprites/Monsters => Monsters; Assets/Sprites/Monsters/Something => Monsters/Something
+        var rel = dir.Substring(dir.Replace("\\", "/").IndexOfOccurence("/", 2) + 1);
+        var targetFolder = Path.Combine("Assets/Sprites/Imported", rel).Replace("\\", "/");
+        var atlasPath = Path.Combine(targetFolder, "Atlas/", $"{baseName}_atlas.png").Replace("\\", "/");
+        AtlasPathToActDir.Add(atlasPath, dir);
+        //var palettePath = Path.Combine("G:\\Games\\RagnarokJP\\data\\palette\\몸\\costume_1", $"{basename}_0_1.pal");
+        var palettePath = Path.Combine(dir, "Palette/");
+        var palettes = new List<string>();
+
+
+        for (var i = 0; i < 10; i++)
+        {
+            var pName = Path.Combine(palettePath, $"{baseName}_{i}_1.pal");
+            if (File.Exists(pName))
+                palettes.Add(pName);
+            pName = Path.Combine(palettePath, $"{baseName}_{i}.pal");
+            if (File.Exists(pName))
+                palettes.Add(pName);
+        }
+
+        // Debug.Log($"{targetFolder}");
+
+        //if (!Directory.Exists(targetFolder))
+            Directory.CreateDirectory(targetFolder);
+
+        //var asset = ScriptableObject.CreateInstance<RoSpriteData>();
+        //AssetDatabase.CreateAsset(asset, Path.Combine(targetFolder, $"{baseName}.asset"));
+
+        var loader = new RagnarokSpriteLoader();
+        loader.Load2(actPath.Replace(".act", ".spr"), atlasPath/*, asset*/, null);
+        //SetUpSpriteData(loader, asset, dir, baseName, baseName);
+
+        for (var i = 0; i < palettes.Count; i++)
+        {
+            //asset = ScriptableObject.CreateInstance<RoSpriteData>();
+            //AssetDatabase.CreateAsset(asset, Path.Combine(targetFolder, $"{baseName}_{i}.asset"));
+
+            atlasPath = Path.Combine(targetFolder, "Atlas/", $"{baseName}_{i}_atlas.png").Replace("\\", "/");
+            AtlasPathToActDir.Add(atlasPath, dir);
+            loader = new RagnarokSpriteLoader();
+            loader.Load2(actPath.Replace(".act", ".spr"), atlasPath/*, asset*/, palettes[i]);
+
+            //SetUpSpriteData(loader, asset, dir, baseName, $"{baseName}_{i}");
+        }
+
+        //AssetDatabase.SaveAssets();
     }
 
     public static void ImportActFile(string actPath)
@@ -68,7 +124,7 @@ public class ActImporter : ScriptedImporter
         AssetDatabase.SaveAssets();
     }
 
-    private static void SetUpSpriteData(RagnarokSpriteLoader spr, RoSpriteData asset, string basePath, string baseName, string outName)
+    public static void SetUpSpriteData(RagnarokSpriteLoader spr, RoSpriteData asset, string basePath, string baseName, string outName)
     {
         var actName = Path.Combine(basePath, baseName + ".act");
         var imfFile = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectorySafe, "imf/", baseName + ".imf");
@@ -226,29 +282,169 @@ public class ActImporter : ScriptedImporter
         {
             Debug.Log($"Couldn't process standing height for sprite {asset.Name}");
         }
-        
-        
     }
 }
 
-public class ActPostProcessor : AssetPostprocessor
+//public class ActPostProcessor : AssetPostprocessor
+//{
+//    static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths,
+//        bool didDomainReload)
+//    {
+//        foreach (var importedAsset in importedAssets)
+//        {
+//            if (!importedAsset.EndsWith(".act"))
+//                continue;
+
+//            var sprName = Path.Combine(Path.GetDirectoryName(importedAsset), Path.GetFileNameWithoutExtension(importedAsset) + ".spr");
+//            if (!File.Exists(sprName))
+//            {
+//                Debug.LogError($"Could not load sprite {importedAsset} as it did not have an associated .spr sprite data file.");
+//                continue;
+//            }
+
+//            ActImporter.ImportActFile(importedAsset);
+//        }
+//    }
+//}
+
+public class ActPostProcessor2 : AssetPostprocessor
 {
-    static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths,
-        bool didDomainReload)
+    private int PreprocessQueueMax = 0;
+    private int PreprocessQueueCount = 0;
+    private void OnPreprocessTexture()
     {
-        foreach (var importedAsset in importedAssets)
+        if (RagnarokSpriteLoader.PathToLoader.ContainsKey(assetPath))
         {
-            if (!importedAsset.EndsWith(".act"))
-                continue;
-            
-            var sprName = Path.Combine(Path.GetDirectoryName(importedAsset), Path.GetFileNameWithoutExtension(importedAsset) + ".spr");
-            if (!File.Exists(sprName))
+            if (PreprocessQueueMax == 0)
             {
-                Debug.LogError($"Could not load sprite {importedAsset} as it did not have an associated .spr sprite data file.");
-                continue;
+                PreprocessQueueMax = RagnarokSpriteLoader.PathToLoader.Count;
+                PreprocessQueueCount = 1;
+            }
+            else PreprocessQueueCount++;
+            EditorUtility.DisplayProgressBar($"Importing Atlas Textures ({PreprocessQueueCount}/{PreprocessQueueMax})", assetPath, (float)PreprocessQueueCount / PreprocessQueueMax);
+
+            var importer = (TextureImporter)assetImporter;
+            importer.textureType = TextureImporterType.Default;
+            importer.npotScale = TextureImporterNPOTScale.None;
+            importer.textureCompression = TextureImporterCompression.CompressedHQ;
+            importer.crunchedCompression = false;
+            importer.compressionQuality = 50;
+            importer.wrapMode = TextureWrapMode.Clamp;
+            importer.isReadable = false;
+            importer.mipmapEnabled = false;
+            importer.alphaIsTransparency = true;
+            importer.maxTextureSize = 4096;
+
+            var settings = new TextureImporterSettings();
+            importer.ReadTextureSettings(settings);
+            settings.spriteMeshType = SpriteMeshType.FullRect;
+            importer.SetTextureSettings(settings);
+
+            if (TextureImportHelper.PathToCallback.TryGetValue(assetPath, out var callback))
+            {
+                TextureImportHelper.PathToCallback.Remove(assetPath);
+
+                callback(importer);
+            }
+        }
+    }
+
+    public static string GetDataPath(string atlasPath)
+    {
+        // go up one folder
+        string parent = Path.GetDirectoryName(Path.GetDirectoryName(atlasPath));
+
+        // remove "_atlas" and add ".asset"
+        string filename = Path.GetFileNameWithoutExtension(atlasPath);
+        filename = filename[..^"_atlas".Length];
+
+        return Path.Combine(parent, filename + ".asset").Replace("\\", "/");
+    }
+
+    private int PostprocessQueueMax = 0;
+    private int PostprocessQueueCount = 0;
+    private void OnPostprocessTexture(Texture2D texture)
+    {
+        var atlasPath = assetPath;
+
+        if (RagnarokSpriteLoader.PathToLoader.TryGetValue(atlasPath, out var loader))
+        {
+            // Display progress bar
+            var queueCount = RagnarokSpriteLoader.PathToLoader.Count;
+            if (PostprocessQueueMax == 0) PostprocessQueueMax = queueCount;
+            EditorUtility.DisplayProgressBar($"Finalize RagnarokSpriteLoader.Load2 ({queueCount}/{PostprocessQueueMax})", atlasPath, (float)queueCount / PreprocessQueueMax);
+            if (queueCount == 0) PostprocessQueueMax = 0;
+
+            // Finish writing data to RagnarokSpriteLoader objects
+            //var supertexture = AssetDatabase.LoadAssetAtPath<Texture2D>(atlasPath);
+            var supertexture = texture;
+            var Textures = loader.Textures;
+            var SpriteSizes = loader.SpriteSizes;
+            var Sprites = loader.Sprites;
+            var baseName = Path.GetFileNameWithoutExtension(atlasPath)[..^"_atlas".Length];
+            ActImporter.AtlasPathToActDir.TryGetValue(atlasPath, out var dir);
+            ActImporter.AtlasPathToActDir.Remove(atlasPath);
+
+            loader.Atlas = supertexture;
+
+            var rects = supertexture.PackTextures(Textures.ToArray(), 2, 2048, false);
+
+            for (var i = 0; i < rects.Length; i++)
+            {
+                var texrect = new Rect(rects[i].x * supertexture.width, rects[i].y * supertexture.height, rects[i].width * supertexture.width,
+                    rects[i].height * supertexture.height);
+                SpriteSizes.Add(new Vector2Int(Textures[i].width, Textures[i].height));
+                var sprite = Sprite.Create(supertexture, texrect, new Vector2(0.5f, 0.5f), 50, 0, SpriteMeshType.FullRect);
+
+                sprite.name = $"sprite_{baseName}_{i:D4}";
+
+                Sprites.Add(sprite);
             }
 
-            ActImporter.ImportActFile(importedAsset);
+            // Create RoSpriteData instance.
+            // Assign all values before CreateAsset to avoid writing to disk twice.
+            var spriteData = ScriptableObject.CreateInstance<RoSpriteData>();
+
+            ActImporter.SetUpSpriteData(loader, spriteData, dir, baseName, baseName);
+
+            if (atlasPath.Contains("Shields") || atlasPath.Contains("status-curse"))
+            {
+                spriteData.ReverseSortingWhenFacingNorth = true;
+                spriteData.IgnoreAnchor = true;
+            }
+
+            AssetDatabase.CreateAsset(spriteData, GetDataPath(atlasPath));
+
+            // AddObjectToAsset must happen after CreateAsset
+            foreach (var sprite in Sprites)
+                AssetDatabase.AddObjectToAsset(sprite, spriteData);
+        }
+    }
+
+    static List<string> GetValidActPaths(string[] paths)
+    {
+        var actPaths = new List<string>();
+
+        foreach (var path in paths)
+            if (Path.GetExtension(path) == ".act")
+                if (File.Exists(Path.ChangeExtension(path, ".spr")))
+                    actPaths.Add(path);
+
+        return actPaths;
+    }
+
+    static void OnPostprocessAllAssets(string[] importedPaths, string[] deletedPaths, string[] movedToPaths, string[] movedFromPaths,
+        bool didDomainReload)
+    {
+        List<string> list = GetValidActPaths(importedPaths);
+
+        var count = list.Count;
+        for (int i = 0; i < count; i++)
+        {
+            string actPath = list[i];
+            var cancelled = EditorUtility.DisplayCancelableProgressBar($"Creating Atlas Textures, ({i}/{count})", actPath, (float)i / count);
+            if (cancelled) break;
+            ActImporter.ImportActFile2(actPath);
         }
     }
 }

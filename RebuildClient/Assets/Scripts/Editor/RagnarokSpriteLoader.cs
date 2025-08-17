@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Assets.Scripts;
 using UnityEditor;
+using UnityEditor.UI;
 using UnityEngine;
 
 namespace Assets.Editor
@@ -15,8 +16,10 @@ namespace Assets.Editor
         public byte[] Data;
     }
 
-    class RagnarokSpriteLoader
+    public class RagnarokSpriteLoader
     {
+        public static Dictionary<string, RagnarokSpriteLoader> PathToLoader = new();
+
         //private Stream fs;
         private MemoryStream ms;
         private BinaryReader br;
@@ -326,6 +329,155 @@ namespace Assets.Editor
             image.hideFlags = HideFlags.HideInHierarchy;
 
             Textures.Add(image);
+        }
+
+        public void Load2(string filename, string atlasPath, string paletteFile, string imfPath = null)
+        {
+            //var filename = ctx.assetPath;
+            var basename = Path.GetFileNameWithoutExtension(filename);
+            var dirName = Path.GetDirectoryName(filename);
+
+            if (!File.Exists(filename))
+            {
+                Debug.LogError($"Could not import asset {filename}, the related .spr file could not be found.");
+                return;
+            }
+
+            var bytes = File.ReadAllBytes(filename);
+            ms = new MemoryStream(bytes);
+            br = new BinaryReader(ms);
+
+            //fs = new FileStream(filename, FileMode.Open);
+            //br = new BinaryReader(fs);
+
+            var header = new string(br.ReadChars(2));
+            if (header != "SP")
+                throw new Exception("Not sprite");
+
+            var minorVersion = br.ReadByte();
+            var majorVersion = br.ReadByte();
+            version = majorVersion * 10 + minorVersion;
+
+            indexCount = br.ReadUInt16();
+            rgbaCount = 0;
+
+            if (version > 11)
+                rgbaCount = br.ReadUInt16();
+
+            //Debug.Log($"RGBA count: {rgbaCount}");
+
+            var frameCount = indexCount + rgbaCount;
+            var rgbaIndex = indexCount;
+
+            spriteFrames = new List<SpriteFrameData>(frameCount);
+
+            if (version < 21)
+                ReadIndexedImage();
+            else
+                ReadRleIndexedImage();
+
+            ReadRgbaImage();
+
+            if (version > 10)
+                ReadPalette();
+
+            // Debug.Log($"Palette check " + Path.Combine(dirName, "Palette/", basename + "_0.pal"));
+
+
+            //var palPath = Path.Combine("G:\\Games\\RagnarokJP\\data\\palette\\몸\\costume_1", $"{basename}_0_1.pal");
+
+            //Debug.Log(palPath);
+
+            if (File.Exists(paletteFile))
+            {
+                var origPalette = paletteData;
+                var newPaletteData = File.ReadAllBytes(paletteFile);
+
+                var tr = newPaletteData[255 * 4];
+                var tb = newPaletteData[255 * 4 + 1];
+                var tg = newPaletteData[255 * 4 + 2];
+
+                for (var i = 0; i < newPaletteData.Length; i += 4)
+                {
+                    var r = newPaletteData[i + 0];
+                    var g = newPaletteData[i + 1];
+                    var b = newPaletteData[i + 2];
+                    if (r == tr && g == tb && b == tg)
+                        Array.Copy(origPalette, i, paletteData, i, 4);
+                    else
+                        Array.Copy(newPaletteData, i, paletteData, i, 4);
+                }
+
+                for (var i = 0; i < spriteFrames.Count; i++)
+                    LoadTextures(basename, i);
+            }
+            else
+            {
+                for (var i = 0; i < spriteFrames.Count; i++)
+                    LoadTextures(basename, i);
+
+            }
+
+            var supertexture = new Texture2D(2, 2);
+            supertexture.name = Path.GetFileNameWithoutExtension(atlasPath);
+            var rects = supertexture.PackTextures(Textures.ToArray(), 2, 2048, false);
+            supertexture.filterMode = FilterMode.Bilinear;
+
+            //var atlasDir = Path.Combine(dirName, "atlas/");
+            //var atlasPath = Path.Combine(atlasDir, supertexture.name + "_.png");
+            var compression = TextureImporterCompression.CompressedHQ;
+            if (atlasPath.Replace("\\", "/").Contains("/Icons/"))
+                compression = TextureImporterCompression.Uncompressed;
+
+            /*supertexture = */TextureImportHelper.SaveAndUpdateTexture2(supertexture, atlasPath, ti =>
+            {
+                ti.textureType = TextureImporterType.Sprite;
+                ti.spriteImportMode = SpriteImportMode.Single;
+                ti.textureCompression = compression;
+                ti.crunchedCompression = false;
+            });
+
+            PathToLoader.Add(atlasPath, this);
+
+            //
+            //var bytes2 = supertexture.EncodeToPNG();
+            //File.WriteAllBytes(atlasPath, bytes2);
+            //supertexture.Compress(true);
+
+            //ctx.AddObjectToAsset(supertexture.name, supertexture);
+
+            /*Atlas = supertexture;*/
+
+            //var byteData = supertexture.EncodeToPNG();
+            //if (!Directory.Exists(atlasDir))
+            //    Directory.CreateDirectory(atlasDir);
+            //File.WriteAllBytes(atlasPath, byteData); //we will reattach this in a bit
+            //AssetDatabase.CreateAsset(supertexture, Path.Combine(basePath, $"{supertexture.name}.texture"));
+            //supertexture = AssetDatabase.LoadAssetAtPath(Path.Combine(subdir, $"{supertexture.name}.anim"), typeof(Texture2D)) as Texture2D;
+
+
+            /*for (var i = 0; i < rects.Length; i++)
+            {
+                var texrect = new Rect(rects[i].x * supertexture.width, rects[i].y * supertexture.height, rects[i].width * supertexture.width,
+                    rects[i].height * supertexture.height);
+                SpriteSizes.Add(new Vector2Int(Textures[i].width, Textures[i].height));
+                var sprite = Sprite.Create(supertexture, texrect, new Vector2(0.5f, 0.5f), 50, 0, SpriteMeshType.FullRect);
+
+                sprite.name = $"sprite_{basename}_{i:D4}";
+
+                AssetDatabase.AddObjectToAsset(sprite, dataObject);
+
+                Sprites.Add(sprite);
+            }
+
+            if (atlasPath.Contains("Shields") || atlasPath.Contains("status-curse"))
+            {
+                dataObject.ReverseSortingWhenFacingNorth = true;
+                dataObject.IgnoreAnchor = true;
+            }*/
+
+            br.Dispose();
+            ms.Dispose();
         }
 
         public void Load(string filename, string atlasPath, RoSpriteData dataObject, string paletteFile, string imfPath = null)

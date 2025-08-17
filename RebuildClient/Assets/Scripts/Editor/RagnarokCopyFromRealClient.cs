@@ -142,151 +142,151 @@ namespace Assets.Editor
             if (!EditorUtility.DisplayDialog("Copy from RO Client", prompt2, "Continue", "Cancel"))
                 return;
 
-            CopyFolder(Path.Combine(dataDir, "wav/"), "Assets/Sounds/", true);
-            CopyFolder(Path.Combine(dataDir, "sprite/몬스터"), "Assets/Sprites/Monsters/");
+            //CopyFolder(Path.Combine(dataDir, "wav/"), "Assets/Sounds/", true);
+            //CopyFolder(Path.Combine(dataDir, "sprite/몬스터"), "Assets/Sprites/Monsters/");
             CopyFolder(Path.Combine(dataDir, "sprite/악세사리/남"), "Assets/Sprites/Headgear/Male/");
-            CopyFolder(Path.Combine(dataDir, "sprite/악세사리/여"), "Assets/Sprites/Headgear/Female/");
-            CopyFolder(Path.Combine(dataDir, "sprite/npc"), "Assets/Sprites/Npcs/");
-            CopyFolder(Path.Combine(dataDir, "sprite/이팩트"), "Assets/Sprites/Effects/");
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/머리통/남"), "Assets/Sprites/Characters/HeadMale/");
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/머리통/여"), "Assets/Sprites/Characters/HeadFemale/");
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/남"), "Assets/Sprites/Characters/BodyMale/");
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/여"), "Assets/Sprites/Characters/BodyFemale/");
-            CopyFolder(Path.Combine(dataDir, "palette/몸"), "Assets/Sprites/Characters/HeadFemale/", false, false,
-                "*_여_*.pal");
-            CopyFolder(Path.Combine(dataDir, "palette/몸"), "Assets/Sprites/Characters/HeadMale/", false, false,
-                "*_남_*.pal");
+            //CopyFolder(Path.Combine(dataDir, "sprite/악세사리/여"), "Assets/Sprites/Headgear/Female/");
+            //CopyFolder(Path.Combine(dataDir, "sprite/npc"), "Assets/Sprites/Npcs/");
+            //CopyFolder(Path.Combine(dataDir, "sprite/이팩트"), "Assets/Sprites/Effects/");
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/머리통/남"), "Assets/Sprites/Characters/HeadMale/");
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/머리통/여"), "Assets/Sprites/Characters/HeadFemale/");
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/남"), "Assets/Sprites/Characters/BodyMale/");
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/여"), "Assets/Sprites/Characters/BodyFemale/");
+            //CopyFolder(Path.Combine(dataDir, "palette/몸"), "Assets/Sprites/Characters/HeadFemale/", false, false,
+            //    "*_여_*.pal");
+            //CopyFolder(Path.Combine(dataDir, "palette/몸"), "Assets/Sprites/Characters/HeadMale/", false, false,
+            //    "*_남_*.pal");
 
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/남"), "Assets/Sprites/Characters/BodyMale/");
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/여"), "Assets/Sprites/Characters/BodyFemale/");
-            CopyFolder(Path.Combine(dataDir, "texture/유저인터페이스/illust"), "Assets/Sprites/Cutins/");
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/남"), "Assets/Sprites/Characters/BodyMale/");
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/여"), "Assets/Sprites/Characters/BodyFemale/");
+            //CopyFolder(Path.Combine(dataDir, "texture/유저인터페이스/illust"), "Assets/Sprites/Cutins/");
 
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/성직자"), "Assets/Sprites/Weapons/Acolyte/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/궁수"), "Assets/Sprites/Weapons/Archer/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/마법사"), "Assets/Sprites/Weapons/Mage/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/상인"), "Assets/Sprites/Weapons/Merchant/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/초보자"), "Assets/Sprites/Weapons/Novice/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/검사"), "Assets/Sprites/Weapons/Swordsman/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/도둑"), "Assets/Sprites/Weapons/Thief/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/슈퍼노비스"), "Assets/Sprites/Weapons/SuperNovice/", false, true,
-                "*", UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/기사"), "Assets/Sprites/Weapons/Knight/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/위저드"), "Assets/Sprites/Weapons/Wizard/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/프리스트"), "Assets/Sprites/Weapons/Priest/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/헌터"), "Assets/Sprites/Weapons/Hunter/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/어세신"), "Assets/Sprites/Weapons/Assassin/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/제철공"), "Assets/Sprites/Weapons/Blacksmith/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/크루세이더"), "Assets/Sprites/Weapons/Crusader/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/세이지"), "Assets/Sprites/Weapons/Sage/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/바드"), "Assets/Sprites/Weapons/Bard/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/무희바지"), "Assets/Sprites/Weapons/Dancer/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/몽크"), "Assets/Sprites/Weapons/Monk/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/로그"), "Assets/Sprites/Weapons/Rogue/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/연금술사"), "Assets/Sprites/Weapons/Alchemist/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/운영자"), "Assets/Sprites/Weapons/GameMaster/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/신페코크루세이더"), "Assets/Sprites/Weapons/PecoCrusader/", false,
-                true, "*", UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/페코페코_기사_남"), "Assets/Sprites/Weapons/PecoKnight/", false, true,
-                "*", UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/성직자"), "Assets/Sprites/Weapons/Acolyte/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/궁수"), "Assets/Sprites/Weapons/Archer/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/마법사"), "Assets/Sprites/Weapons/Mage/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/상인"), "Assets/Sprites/Weapons/Merchant/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/초보자"), "Assets/Sprites/Weapons/Novice/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/검사"), "Assets/Sprites/Weapons/Swordsman/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/도둑"), "Assets/Sprites/Weapons/Thief/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/슈퍼노비스"), "Assets/Sprites/Weapons/SuperNovice/", false, true,
+            //    "*", UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/기사"), "Assets/Sprites/Weapons/Knight/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/위저드"), "Assets/Sprites/Weapons/Wizard/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/프리스트"), "Assets/Sprites/Weapons/Priest/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/헌터"), "Assets/Sprites/Weapons/Hunter/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/어세신"), "Assets/Sprites/Weapons/Assassin/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/제철공"), "Assets/Sprites/Weapons/Blacksmith/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/크루세이더"), "Assets/Sprites/Weapons/Crusader/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/세이지"), "Assets/Sprites/Weapons/Sage/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/바드"), "Assets/Sprites/Weapons/Bard/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/무희바지"), "Assets/Sprites/Weapons/Dancer/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/몽크"), "Assets/Sprites/Weapons/Monk/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/로그"), "Assets/Sprites/Weapons/Rogue/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/연금술사"), "Assets/Sprites/Weapons/Alchemist/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/운영자"), "Assets/Sprites/Weapons/GameMaster/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/신페코크루세이더"), "Assets/Sprites/Weapons/PecoCrusader/", false,
+            //    true, "*", UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/페코페코_기사_남"), "Assets/Sprites/Weapons/PecoKnight/", false, true,
+            //    "*", UpdateSpriteName);
 
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/성직자"), "Assets/Sprites/Shields/Acolyte/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/궁수"), "Assets/Sprites/Shields/Archer/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/마법사"), "Assets/Sprites/Shields/Mage/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/상인"), "Assets/Sprites/Shields/Merchant/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/초보자"), "Assets/Sprites/Shields/Novice/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/검사"), "Assets/Sprites/Shields/Swordsman/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/도둑"), "Assets/Sprites/Shields/Thief/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/슈퍼노비스"), "Assets/Sprites/Shields/SuperNovice/", false, true,
-                "*", UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/기사"), "Assets/Sprites/Shields/Knight/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/위저드"), "Assets/Sprites/Shields/Wizard/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/프리스트"), "Assets/Sprites/Shields/Priest/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/헌터"), "Assets/Sprites/Shields/Hunter/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/어세신"), "Assets/Sprites/Shields/Assassin/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/제철공"), "Assets/Sprites/Shields/Blacksmith/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/크루세이더"), "Assets/Sprites/Shields/Crusader/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/세이지"), "Assets/Sprites/Shields/Sage/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/바드"), "Assets/Sprites/Shields/Bard/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/무희바지"), "Assets/Sprites/Shields/Dancer/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/몽크"), "Assets/Sprites/Shields/Monk/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/로그"), "Assets/Sprites/Shields/Rogue/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/연금술사"), "Assets/Sprites/Shields/Alchemist/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/운영자"), "Assets/Sprites/Shields/GameMaster/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/신페코크루세이더"), "Assets/Sprites/Shields/PecoCrusader/", false, true,
-                "*", UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/페코페코_기사_남"), "Assets/Sprites/Shields/PecoKnight/", false, true,
-                "*", UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/성직자"), "Assets/Sprites/Shields/Acolyte/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/궁수"), "Assets/Sprites/Shields/Archer/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/마법사"), "Assets/Sprites/Shields/Mage/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/상인"), "Assets/Sprites/Shields/Merchant/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/초보자"), "Assets/Sprites/Shields/Novice/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/검사"), "Assets/Sprites/Shields/Swordsman/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/도둑"), "Assets/Sprites/Shields/Thief/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/슈퍼노비스"), "Assets/Sprites/Shields/SuperNovice/", false, true,
+            //    "*", UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/기사"), "Assets/Sprites/Shields/Knight/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/위저드"), "Assets/Sprites/Shields/Wizard/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/프리스트"), "Assets/Sprites/Shields/Priest/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/헌터"), "Assets/Sprites/Shields/Hunter/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/어세신"), "Assets/Sprites/Shields/Assassin/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/제철공"), "Assets/Sprites/Shields/Blacksmith/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/크루세이더"), "Assets/Sprites/Shields/Crusader/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/세이지"), "Assets/Sprites/Shields/Sage/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/바드"), "Assets/Sprites/Shields/Bard/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/무희바지"), "Assets/Sprites/Shields/Dancer/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/몽크"), "Assets/Sprites/Shields/Monk/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/로그"), "Assets/Sprites/Shields/Rogue/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/연금술사"), "Assets/Sprites/Shields/Alchemist/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/운영자"), "Assets/Sprites/Shields/GameMaster/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/신페코크루세이더"), "Assets/Sprites/Shields/PecoCrusader/", false, true,
+            //    "*", UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/페코페코_기사_남"), "Assets/Sprites/Shields/PecoKnight/", false, true,
+            //    "*", UpdateSpriteName);
 
-            CopySingleFile(Path.Combine(dataDir, "sprite/cursors.act"), "Assets/Sprites/Misc/");
-            CopySingleFile(Path.Combine(dataDir, "sprite/cursors.spr"), "Assets/Sprites/Misc/");
-            CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/emotion.act"), "Assets/Sprites/Misc/");
-            CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/emotion.spr"), "Assets/Sprites/Misc/");
-            CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/숫자.act"), "Assets/Sprites/Misc/damagenumbers.act");
-            CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/숫자.spr"), "Assets/Sprites/Misc/damagenumbers.spr");
+            //CopySingleFile(Path.Combine(dataDir, "sprite/cursors.act"), "Assets/Sprites/Misc/");
+            //CopySingleFile(Path.Combine(dataDir, "sprite/cursors.spr"), "Assets/Sprites/Misc/");
+            //CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/emotion.act"), "Assets/Sprites/Misc/");
+            //CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/emotion.spr"), "Assets/Sprites/Misc/");
+            //CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/숫자.act"), "Assets/Sprites/Misc/damagenumbers.act");
+            //CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/숫자.spr"), "Assets/Sprites/Misc/damagenumbers.spr");
 
-            //the project has custom monsters, but for copyright reasons the sprites aren't part of the repo
-            //to make things still run without the custom sprites we substitute a similar sprite if necessary
-            CreateTemporarySpriteIfRequired("andre", "andre_larva");
-            CreateTemporarySpriteIfRequired("deniro", "deniro_larva");
-            CreateTemporarySpriteIfRequired("piere", "piere_larva");
-            CreateTemporarySpriteIfRequired("andre", "soldier_andre");
-            CreateTemporarySpriteIfRequired("deniro", "soldier_deniro");
-            CreateTemporarySpriteIfRequired("piere", "soldier_piere");
-            CreateTemporarySpriteIfRequired("vagabond_wolf", "were_wolf");
-            CreateTemporarySpriteIfRequired("frilldora", "raptice");
-            CreateTemporarySpriteIfRequired("poison_spore", "deathspore");
+            ////the project has custom monsters, but for copyright reasons the sprites aren't part of the repo
+            ////to make things still run without the custom sprites we substitute a similar sprite if necessary
+            //CreateTemporarySpriteIfRequired("andre", "andre_larva");
+            //CreateTemporarySpriteIfRequired("deniro", "deniro_larva");
+            //CreateTemporarySpriteIfRequired("piere", "piere_larva");
+            //CreateTemporarySpriteIfRequired("andre", "soldier_andre");
+            //CreateTemporarySpriteIfRequired("deniro", "soldier_deniro");
+            //CreateTemporarySpriteIfRequired("piere", "soldier_piere");
+            //CreateTemporarySpriteIfRequired("vagabond_wolf", "were_wolf");
+            //CreateTemporarySpriteIfRequired("frilldora", "raptice");
+            //CreateTemporarySpriteIfRequired("poison_spore", "deathspore");
 
             AssetDatabase.Refresh();
 
-            EffectStrImporter.Import(); //effects
-            EffectStrImporter.ImportEffectTextures();
-            RagnarokMapImporterWindow.ImportWater();
-            RagnarokMapImporterWindow.ImportAllMissingMaps();
-            ItemIconImporter.ImportItems();
+            //EffectStrImporter.Import(); //effects
+            //EffectStrImporter.ImportEffectTextures();
+            //RagnarokMapImporterWindow.ImportWater();
+            //RagnarokMapImporterWindow.ImportAllMissingMaps();
+            //ItemIconImporter.ImportItems();
 
-            RoLightingManagerWindow.CreateOrOpen();
+            //RoLightingManagerWindow.CreateOrOpen();
         }
 
         [MenuItem("Ragnarok/Select data to copy from client data folder", priority = 2)]

@@ -4,13 +4,16 @@ using System.IO;
 using System.Text;
 using B83.Image.BMP;
 using UnityEngine;
+using UnityEditor.Recorder;
+using System.Runtime.CompilerServices;
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
 
 namespace Assets.Scripts
 {
-
     public class TextureImportHelper
     {
         public static void SetTexturesReadable(List<Texture2D> textures)
@@ -34,6 +37,52 @@ namespace Assets.Scripts
 
             if(hasChanges)
                 AssetDatabase.Refresh();
+        }
+
+        public static readonly Dictionary<string, Action<TextureImporter>> PathToCallback = new();
+
+        public static void SaveAndUpdateTexture2(Texture2D texture, string outputPath, Action<TextureImporter> callback = null, bool forceUpdate = true)
+        {
+            outputPath = outputPath.Replace("\\", "/");
+            var dir = Path.GetDirectoryName(outputPath);
+            //if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            var bytes = texture.EncodeToPNG();
+            File.WriteAllBytes(outputPath, bytes);
+
+            if (callback != null)
+                PathToCallback.Add(outputPath, callback);
+
+            //if (forceUpdate)
+            //    AssetDatabase.ImportAsset(outputPath, ImportAssetOptions.ForceUpdate);
+            //AssetDatabase.Refresh();
+
+            //TextureImporter importer = (TextureImporter)TextureImporter.GetAtPath(outputPath);
+            //importer.textureType = TextureImporterType.Default;
+            //importer.npotScale = TextureImporterNPOTScale.None;
+            //importer.textureCompression = TextureImporterCompression.CompressedHQ;
+            //importer.crunchedCompression = false;
+            //importer.compressionQuality = 50;
+            //importer.wrapMode = TextureWrapMode.Clamp;
+            //importer.isReadable = false;
+            //importer.mipmapEnabled = false;
+            //importer.alphaIsTransparency = true;
+            //importer.maxTextureSize = 4096;
+
+            //var settings = new TextureImporterSettings();
+            //importer.ReadTextureSettings(settings);
+            //settings.spriteMeshType = SpriteMeshType.FullRect;
+            //importer.SetTextureSettings(settings);
+
+            //if (callback != null)
+            //    callback(importer);
+
+            //importer.SaveAndReimport();
+
+            //texture = AssetDatabase.LoadAssetAtPath<Texture2D>(outputPath);
+
+            //return texture;
         }
 
         public static Texture2D SaveAndUpdateTexture(Texture2D texture, string outputPath, Action<TextureImporter> callback = null, bool forceUpdate = true)
