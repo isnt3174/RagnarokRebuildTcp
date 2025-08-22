@@ -10,6 +10,38 @@ using UnityEditor;
 
 namespace Assets.Scripts
 {
+    public class TextureImportHelperAssetPostprocessor : AssetPostprocessor
+    {
+        public static readonly Dictionary<string, Action<TextureImporter>> PathToCallback = new();
+
+        private void OnPreprocessTexture()
+        {
+            if (!PathToCallback.TryGetValue(assetPath, out var callback))
+                return;
+
+            PathToCallback.Remove(assetPath);
+
+            TextureImporter importer = (TextureImporter)TextureImporter.GetAtPath(assetPath);
+            importer.textureType = TextureImporterType.Default;
+            importer.npotScale = TextureImporterNPOTScale.None;
+            importer.textureCompression = TextureImporterCompression.CompressedHQ;
+            importer.crunchedCompression = false;
+            importer.compressionQuality = 50;
+            importer.wrapMode = TextureWrapMode.Clamp;
+            importer.isReadable = false;
+            importer.mipmapEnabled = false;
+            importer.alphaIsTransparency = true;
+            importer.maxTextureSize = 4096;
+
+            var settings = new TextureImporterSettings();
+            importer.ReadTextureSettings(settings);
+            settings.spriteMeshType = SpriteMeshType.FullRect;
+            importer.SetTextureSettings(settings);
+
+            if (callback != null)
+                callback(importer);
+        }
+    }
 
     public class TextureImportHelper
     {
@@ -46,32 +78,12 @@ namespace Assets.Scripts
 	        var bytes = texture.EncodeToPNG();
 	        File.WriteAllBytes(outputPath, bytes);
 
+            TextureImportHelperAssetPostprocessor.PathToCallback.Add(outputPath, callback);
+
             if(forceUpdate)
 	            AssetDatabase.ImportAsset(outputPath, ImportAssetOptions.ForceUpdate);
 	        AssetDatabase.Refresh();
 
-	        TextureImporter importer = (TextureImporter)TextureImporter.GetAtPath(outputPath);
-            importer.textureType = TextureImporterType.Default;
-	        importer.npotScale = TextureImporterNPOTScale.None;
-	        importer.textureCompression = TextureImporterCompression.CompressedHQ;
-	        importer.crunchedCompression = false;
-	        importer.compressionQuality = 50;
-            importer.wrapMode = TextureWrapMode.Clamp;
-	        importer.isReadable = false;
-	        importer.mipmapEnabled = false;
-	        importer.alphaIsTransparency = true;
-            importer.maxTextureSize = 4096;
-            
-            var settings = new TextureImporterSettings();
-            importer.ReadTextureSettings(settings);
-            settings.spriteMeshType = SpriteMeshType.FullRect;
-            importer.SetTextureSettings(settings);
-
-            if (callback != null)
-                callback(importer);
-
-	        importer.SaveAndReimport();
-            
 	        texture = AssetDatabase.LoadAssetAtPath<Texture2D>(outputPath);
 
             return texture;
