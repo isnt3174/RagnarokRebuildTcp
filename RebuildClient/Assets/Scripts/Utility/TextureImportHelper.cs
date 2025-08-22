@@ -68,7 +68,7 @@ namespace Assets.Scripts
                 AssetDatabase.Refresh();
         }
 
-        public static Texture2D SaveAndUpdateTexture(Texture2D texture, string outputPath, Action<TextureImporter> callback = null, bool forceUpdate = true)
+        public static void SaveTexture(Texture2D texture, string outputPath, Action<TextureImporter> callback = null, bool forceUpdate = true)
         {
             outputPath = outputPath.Replace("\\", "/");
             var dir = Path.GetDirectoryName(outputPath);
@@ -82,6 +82,12 @@ namespace Assets.Scripts
 
             if(forceUpdate)
 	            AssetDatabase.ImportAsset(outputPath, ImportAssetOptions.ForceUpdate);
+        }
+
+        public static Texture2D SaveAndUpdateTexture(Texture2D texture, string outputPath, Action<TextureImporter> callback = null, bool forceUpdate = true)
+        {
+            SaveTexture(texture, outputPath, callback, forceUpdate);
+
 	        AssetDatabase.Refresh();
 
 	        texture = AssetDatabase.LoadAssetAtPath<Texture2D>(outputPath);
